@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.Rendering;
 public class Interaction : MonoBehaviour
 {
+
     [SerializeField] float _interactionRange = 3f;
     private Camera _mainCam;
     private IInteractable _hit;
@@ -10,46 +11,39 @@ public class Interaction : MonoBehaviour
     void Start()
     {
         _mainCam = Camera.main;
-        Debug.Log("✅ Interaction inicializado");
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (_mainCam == null)
-        {
-            Debug.LogError("❌ _mainCam é NULL!");
-            return;
-        }
-
         if (!Physics.Raycast(_mainCam.transform.position, _mainCam.transform.forward, out RaycastHit hit, _interactionRange))
-        {
-            _hit?.HideOutline();
-            _hit = null;
             return;
-        }
+
 
         if (hit.collider.TryGetComponent(out IInteractable interactable))
         {
-            if (_hit == interactable)
+            if (_hit == interactable)// SE FOR O MESMO OBJETO NAO FA�A NADA 
                 return;
 
             _hit?.HideOutline();
             _hit = interactable;
             _hit.ShowOutline();
         }
+
         else
-        {
+        { // caso o raycast acerte algo que nai seja interagivel ou nao acerte nada, esconde o outline do objeto anterior
             _hit?.HideOutline();
             _hit = null;
         }
+    }
 
-        // Interação com tecla E
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (_hit != null)
-            {
-                _hit.Interact();
-            }
-        }
+    public void OnInteract(InputValue value)
+    {
+
+        if (_hit == null)
+            return;
+
+        print("Interacting with: " + _hit);
+        _hit.Interact();
     }
 }

@@ -6,7 +6,7 @@ public class MissionSystem : MonoBehaviour
     public static MissionSystem Instance;
 
     [SerializeField] private List<Mission> missions = new List<Mission>();
-    [SerializeField] private MissionUI missionUI;
+    [SerializeField] private MissionUI_Manual missionUIManual; // ← UI MANUAL
 
     void Awake()
     {
@@ -23,19 +23,22 @@ public class MissionSystem : MonoBehaviour
 
     void Start()
     {
-        if (missionUI != null)
+        // Atualiza a UI no começo
+        if (missionUIManual != null)
         {
-            missionUI.UpdateUI(missions);
+            missionUIManual.UpdateAllTexts();
             Debug.Log($"📋 UI atualizada com {missions.Count} missões");
         }
         else
         {
-            Debug.LogError("❌ MissionUI não está conectado no MissionSystem!");
+            Debug.LogWarning("⚠️ MissionUI_Manual não está conectado!");
         }
     }
 
     public void CompleteMission(string missionName)
     {
+        Debug.Log($"🔍 Procurando missão: {missionName}");
+
         foreach (Mission mission in missions)
         {
             if (mission.missionName == missionName && !mission.isCompleted)
@@ -43,9 +46,11 @@ public class MissionSystem : MonoBehaviour
                 mission.isCompleted = true;
                 Debug.Log($"✅ Missão completada: {missionName}");
 
-                if (missionUI != null)
+                // 🔥 ATUALIZA A UI MANUAL
+                if (missionUIManual != null)
                 {
-                    missionUI.UpdateUI(missions);
+                    missionUIManual.UpdateAllTexts();
+                    Debug.Log("📋 UI atualizada!");
                 }
 
                 CheckAllCompleted();
@@ -56,7 +61,22 @@ public class MissionSystem : MonoBehaviour
         Debug.LogWarning($"⚠️ Missão não encontrada: {missionName}");
     }
 
-    public List<Mission> GetMissions() => missions;
+    public List<Mission> GetMissions()
+    {
+        return missions;
+    }
+
+    public bool IsMissionCompleted(string missionName)
+    {
+        foreach (Mission mission in missions)
+        {
+            if (mission.missionName == missionName)
+            {
+                return mission.isCompleted;
+            }
+        }
+        return false;
+    }
 
     private void CheckAllCompleted()
     {
@@ -72,6 +92,7 @@ public class MissionSystem : MonoBehaviour
         if (completed >= total && total > 0)
         {
             Debug.Log("🎉 TODAS AS MISSÕES COMPLETADAS!");
+            // Aqui você pode ativar algo, tipo: portal.SetActive(true);
         }
     }
 }
