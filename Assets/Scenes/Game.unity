@@ -642,12 +642,12 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1
+  m_Height: 1.5
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -669,10 +669,9 @@ MonoBehaviour:
   - {fileID: 847157142}
   - {fileID: 1450092224}
   - {fileID: 248317014}
-  distanciaVisao: 20
-  anguloVisao: 178.7
-  distanciaPerda: 18
-  distanciaPonto: 1
+  distanciaVisao: 15
+  anguloVisao: 120
+  distanciaPonto: 10
   distanciaAtaque: 2
 --- !u!135 &685549243
 SphereCollider:
