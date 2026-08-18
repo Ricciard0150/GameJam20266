@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro; // ← TextMeshPro
 
 public class MissionUI_Manual : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class MissionUI_Manual : MonoBehaviour
     public class MissionText
     {
         public string missionName;  // Nome da missão
-        public Text missionText;    // O texto na UI
+        public TextMeshProUGUI missionText; // ← TMP_UGUI (para UI)!
     }
 
     [SerializeField] private List<MissionText> missionTexts = new List<MissionText>();
@@ -20,6 +20,8 @@ public class MissionUI_Manual : MonoBehaviour
 
     public void UpdateAllTexts()
     {
+        Debug.Log("📋 Atualizando textos da UI...");
+
         foreach (MissionText mt in missionTexts)
         {
             if (mt.missionText == null)
@@ -48,11 +50,13 @@ public class MissionUI_Manual : MonoBehaviour
             {
                 mt.missionText.text = $"<s>{mt.missionName}</s>";
                 mt.missionText.color = Color.gray;
+                Debug.Log($"   ✅ {mt.missionName} - COMPLETA");
             }
             else
             {
                 mt.missionText.text = $"⬜ {mt.missionName}";
                 mt.missionText.color = Color.white;
+                Debug.Log($"   ⬜ {mt.missionName} - INCOMPLETA");
             }
         }
     }

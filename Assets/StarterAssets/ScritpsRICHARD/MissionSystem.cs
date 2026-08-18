@@ -6,14 +6,18 @@ public class MissionSystem : MonoBehaviour
     public static MissionSystem Instance;
 
     [SerializeField] private List<Mission> missions = new List<Mission>();
-    [SerializeField] private MissionUI_Manual missionUIManual; // ← UI MANUAL
+    [SerializeField] private MissionUI_Manual missionUIManual;
+
+    [Header("Fim do Jogo")]
+    [SerializeField] private string nextSceneName = "WinScreen"; // Nome da cena final
+    [SerializeField] private float delayBeforeFade = 1.5f; // Espera antes do fade
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            Debug.Log("✅ MissionSystem criado!");
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -23,22 +27,14 @@ public class MissionSystem : MonoBehaviour
 
     void Start()
     {
-        // Atualiza a UI no começo
         if (missionUIManual != null)
         {
             missionUIManual.UpdateAllTexts();
-            Debug.Log($"📋 UI atualizada com {missions.Count} missões");
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ MissionUI_Manual não está conectado!");
         }
     }
 
     public void CompleteMission(string missionName)
     {
-        Debug.Log($"🔍 Procurando missão: {missionName}");
-
         foreach (Mission mission in missions)
         {
             if (mission.missionName == missionName && !mission.isCompleted)
@@ -46,38 +42,20 @@ public class MissionSystem : MonoBehaviour
                 mission.isCompleted = true;
                 Debug.Log($"✅ Missão completada: {missionName}");
 
-                // 🔥 ATUALIZA A UI MANUAL
                 if (missionUIManual != null)
                 {
                     missionUIManual.UpdateAllTexts();
-                    Debug.Log("📋 UI atualizada!");
                 }
 
                 CheckAllCompleted();
                 return;
             }
         }
-
-        Debug.LogWarning($"⚠️ Missão não encontrada: {missionName}");
     }
 
-    public List<Mission> GetMissions()
-    {
-        return missions;
-    }
+    public List<Mission> GetMissions() => missions;
 
-    public bool IsMissionCompleted(string missionName)
-    {
-        foreach (Mission mission in missions)
-        {
-            if (mission.missionName == missionName)
-            {
-                return mission.isCompleted;
-            }
-        }
-        return false;
-    }
-
+    // 🔥 VERIFICA SE TODAS AS MISSÕES FORAM COMPLETADAS
     private void CheckAllCompleted()
     {
         int total = missions.Count;
@@ -92,7 +70,40 @@ public class MissionSystem : MonoBehaviour
         if (completed >= total && total > 0)
         {
             Debug.Log("🎉 TODAS AS MISSÕES COMPLETADAS!");
-            // Aqui você pode ativar algo, tipo: portal.SetActive(true);
+            StartCoroutine(CompleteGame());
+        }
+    }
+
+    // 🔥 CORRUTINA PARA FINALIZAR O JOGO
+    private System.Collections.IEnumerator CompleteGame()
+    {
+        // Espera um pouco antes de começar o fade
+        yield return new WaitForSeconds(delayBeforeFade);
+
+        // Faz o fade out
+        if (SceneFader.Instance != null)
+        {
+            yield return StartCoroutine(SceneFader.Instance.FadeOut());
+        }
+
+        // Espera mais um pouco
+        yield return new WaitForSeconds(0.5f);
+
+        // Carrega a próxima cena
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Nenhuma cena definida em 'Next Scene Name'!");
+        }
+
+        // Se tiver SceneFader, faz fade in na nova cena
+        if (SceneFader.Instance != null)
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return StartCoroutine(SceneFader.Instance.FadeIn());
         }
     }
 }
