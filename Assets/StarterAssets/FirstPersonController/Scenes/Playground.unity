@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8548ca119b3ad94aa5b3c2f829549ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionLightSwitch
-  missionName: Perfeito
+  missionName: Ligar a luz
 --- !u!114 &21286281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 526997612}
   - component: {fileID: 526997611}
   - component: {fileID: 526997609}
+  - component: {fileID: 526997613}
   m_Layer: 5
   m_Name: MissionPanel
   m_TagString: Untagged
@@ -437,8 +438,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133b16a9d7fa2a24597ee555f6af00d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionUI
-  missionPrefab: {fileID: 8984930314765419850, guid: 69eab52f540b2d346a70e9729f85327c, type: 3}
+  missionPrefab: {fileID: 38735287759816088, guid: a2b657abead362d4bb73bc78492d0984, type: 3}
   missionContainer: {fileID: 241121824}
+  missionItems: []
 --- !u!224 &526997610
 RectTransform:
   m_ObjectHideFlags: 0
@@ -497,6 +499,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526997608}
   m_CullTransparentMesh: 1
+--- !u!114 &526997613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526997608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2a66dae38e5d0499773b2543884c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissionUI_Manual
+  missionTexts: []
 --- !u!1 &542508511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,11 +1130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionSystem
   missions:
-  - missionName: Perfeito
+  - missionName: Ligar a luz
     isCompleted: 0
-  - missionName: Clooooose
-    isCompleted: 0
-  missionUI: {fileID: 526997609}
+  missionUIManual: {fileID: 0}
 --- !u!1 &1748356747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,7 +1160,7 @@ RectTransform:
   m_GameObject: {fileID: 1748356747}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 662690142}
