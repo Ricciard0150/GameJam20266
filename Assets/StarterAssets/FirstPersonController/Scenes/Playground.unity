@@ -1748,7 +1748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23f355d52d4f7f43bafe63b67809291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interaction
-  _interactionRange: 9.72
+  _interactionRange: 5.79
 --- !u!1 &2114283753834967212
 GameObject:
   m_ObjectHideFlags: 0
