@@ -30365,7 +30365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2197839692153663138, guid: 11a65d0612877ea4bae6d2348561e195, type: 3}
       propertyPath: nextSceneName
-      value: CutsceneFinal
+      value: Cutscene Vitoria
       objectReference: {fileID: 0}
     - target: {fileID: 2197839692153663138, guid: 11a65d0612877ea4bae6d2348561e195, type: 3}
       propertyPath: missionUIManual
