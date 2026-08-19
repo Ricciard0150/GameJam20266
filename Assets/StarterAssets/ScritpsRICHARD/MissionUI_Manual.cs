@@ -1,26 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using TMPro; // ← TextMeshPro
+using TMPro;
 
 public class MissionUI_Manual : MonoBehaviour
 {
     [System.Serializable]
     public class MissionText
     {
-        public string missionName;  // Nome da missão
-        public TextMeshProUGUI missionText; // ← TMP_UGUI (para UI)!
+        public string missionName;
+        public TextMeshProUGUI missionText;
     }
 
     [SerializeField] private List<MissionText> missionTexts = new List<MissionText>();
 
     void Start()
     {
+        Debug.Log("🚀 MissionUI_Manual Start!");
         UpdateAllTexts();
     }
 
     public void UpdateAllTexts()
     {
-        Debug.Log("📋 Atualizando textos da UI...");
+        Debug.Log("📋 UpdateAllTexts CHAMADO!");
 
         foreach (MissionText mt in missionTexts)
         {
@@ -30,7 +31,6 @@ public class MissionUI_Manual : MonoBehaviour
                 continue;
             }
 
-            // Verifica se a missão está completa
             bool isCompleted = false;
 
             if (MissionSystem.Instance != null)
@@ -45,12 +45,12 @@ public class MissionUI_Manual : MonoBehaviour
                 }
             }
 
-            // Atualiza o texto
+            // 🔥 APLICA O ESTILO CERTO
             if (isCompleted)
             {
                 mt.missionText.text = $"<s>{mt.missionName}</s>";
-                mt.missionText.color = Color.gray;
-                Debug.Log($"   ✅ {mt.missionName} - COMPLETA");
+                mt.missionText.color = new Color(0.3f, 0.3f, 0.3f); // Cinza escuro
+                Debug.Log($"   ✅ {mt.missionName} - COMPLETA (riscado e cinza)");
             }
             else
             {
@@ -59,5 +59,12 @@ public class MissionUI_Manual : MonoBehaviour
                 Debug.Log($"   ⬜ {mt.missionName} - INCOMPLETA");
             }
         }
+    }
+
+    // 🔥 FORÇA ATUALIZAÇÃO
+    public void ForceUpdate()
+    {
+        Debug.Log("🔥 ForceUpdate CHAMADO!");
+        UpdateAllTexts();
     }
 }
