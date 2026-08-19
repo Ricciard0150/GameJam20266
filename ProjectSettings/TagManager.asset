@@ -45,6 +45,9 @@ TagManager:
   - name: "\xE7\xE7\xE7\xE7\xE7\xE7\xE7"
     uniqueID: 270102561
     locked: 0
+  - name: aaaaaaaaaaa
+    uniqueID: 2745647123
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
