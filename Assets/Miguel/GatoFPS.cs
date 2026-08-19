@@ -3,29 +3,29 @@ using UnityEngine.InputSystem;
 
 public class GatoFPS : MonoBehaviour
 {
+    [Header("Movimento")]
     public float velocidadeAndar = 3f;
     public float velocidadeCorrer = 5.5f;
     public float aceleracao = 12f;
     public float desaceleracao = 18f;
 
+    [Header("Mouse")]
     public float sensibilidadeMouse = 0.15f;
     public float limiteVertical = 85f;
 
+    [Header("Câmera")]
     public Transform cameraJogador;
+
+    [Header("Character Controller")]
     public CharacterController controller;
 
+    [Header("Gravidade e Pulo")]
     public float gravidade = -20f;
     public float alturaPulo = 1f;
-
-    public float intensidadeBalanço = 0.04f;
-    public float velocidadeBalanço = 8f;
 
     private float rotacaoX;
     private float velocidadeAtual;
     private float velocidadeVertical;
-    private float tempoBalanço;
-
-    private Vector3 posicaoInicialCamera;
 
     void Start()
     {
@@ -35,7 +35,8 @@ public class GatoFPS : MonoBehaviour
         if (controller == null)
             controller = GetComponent<CharacterController>();
 
-        posicaoInicialCamera = cameraJogador.localPosition;
+        // Começa com velocidade vertical zerada.
+        velocidadeVertical = 0f;
     }
 
     void Update()
@@ -68,13 +69,17 @@ public class GatoFPS : MonoBehaviour
             input = new Vector2(horizontal, vertical).normalized;
         }
 
-        Vector3 direcao = transform.right * input.x + transform.forward * input.y;
+        Vector3 direcao =
+            transform.right * input.x +
+            transform.forward * input.y;
 
-        bool correndo = Keyboard.current != null &&
-                        Keyboard.current.leftShiftKey.isPressed &&
-                        input.y > 0;
+        bool correndo =
+            Keyboard.current != null &&
+            Keyboard.current.leftShiftKey.isPressed &&
+            input.y > 0;
 
-        float velocidadeAlvo = correndo ? velocidadeCorrer : velocidadeAndar;
+        float velocidadeAlvo =
+            correndo ? velocidadeCorrer : velocidadeAndar;
 
         if (direcao.magnitude > 0.1f)
         {
@@ -88,26 +93,33 @@ public class GatoFPS : MonoBehaviour
         {
             velocidadeAtual = Mathf.MoveTowards(
                 velocidadeAtual,
-                0,
+                0f,
                 desaceleracao * Time.deltaTime
             );
         }
 
         Vector3 movimento = direcao * velocidadeAtual;
 
+        // GRAVIDADE
         if (controller.isGrounded)
         {
-            velocidadeVertical = -2f;
+            // Mantém o jogador encostado no chão.
+            if (velocidadeVertical < 0f)
+                velocidadeVertical = -2f;
 
-            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            // PULO
+            if (Keyboard.current != null &&
+                Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 velocidadeVertical = Mathf.Sqrt(
                     alturaPulo * -2f * gravidade
                 );
             }
         }
-
-        velocidadeVertical += gravidade * Time.deltaTime;
+        else
+        {
+            velocidadeVertical += gravidade * Time.deltaTime;
+        }
 
         movimento.y = velocidadeVertical;
 
@@ -124,46 +136,24 @@ public class GatoFPS : MonoBehaviour
         float mouseX = mouse.x * sensibilidadeMouse;
         float mouseY = mouse.y * sensibilidadeMouse;
 
+        // Olhar para os lados
         transform.Rotate(Vector3.up * mouseX);
 
+        // Olhar para cima e para baixo
         rotacaoX -= mouseY;
+
         rotacaoX = Mathf.Clamp(
             rotacaoX,
             -limiteVertical,
             limiteVertical
         );
 
+        // SOMENTE ROTACIONA A CÂMERA.
+        // A POSIÇÃO DELA NÃO É ALTERADA.
         cameraJogador.localRotation = Quaternion.Euler(
             rotacaoX,
             0f,
             0f
         );
-
-        Vector3 posicaoCamera = posicaoInicialCamera;
-
-        if (velocidadeAtual > 0.2f && controller.isGrounded)
-        {
-            tempoBalanço += Time.deltaTime *
-                            velocidadeBalanço *
-                            (velocidadeAtual / velocidadeAndar);
-
-            float movimentoX =
-                Mathf.Cos(tempoBalanço) * intensidadeBalanço;
-
-            float movimentoY =
-                Mathf.Sin(tempoBalanço * 2f) * intensidadeBalanço;
-
-            posicaoCamera += new Vector3(
-                movimentoX,
-                movimentoY,
-                0
-            );
-        }
-
-        cameraJogador.localPosition = Vector3.Lerp(
-            cameraJogador.localPosition,
-            posicaoCamera,
-            Time.deltaTime * 10f
-        );
     }
-}   
+}
