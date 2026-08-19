@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events; // Adicione isso
 
 public class MissionSystem : MonoBehaviour
 {
@@ -8,9 +9,12 @@ public class MissionSystem : MonoBehaviour
     [SerializeField] private List<Mission> missions = new List<Mission>();
     [SerializeField] private MissionUI_Manual missionUIManual;
 
+    // 🔥 NOVO: Evento para notificar quando o progresso muda
+    public UnityEvent OnProgressChanged;
+
     [Header("Fim do Jogo")]
-    [SerializeField] private string nextSceneName = "WinScreen"; // Nome da cena final
-    [SerializeField] private float delayBeforeFade = 1.5f; // Espera antes do fade
+    [SerializeField] private string nextSceneName = "WinScreen";
+    [SerializeField] private float delayBeforeFade = 1.5f;
 
     void Awake()
     {
@@ -31,6 +35,9 @@ public class MissionSystem : MonoBehaviour
         {
             missionUIManual.UpdateAllTexts();
         }
+
+        // 🔥 NOTIFICA O PROGRESSO INICIAL
+        OnProgressChanged?.Invoke();
     }
 
     public void CompleteMission(string missionName)
@@ -47,6 +54,9 @@ public class MissionSystem : MonoBehaviour
                     missionUIManual.UpdateAllTexts();
                 }
 
+                // 🔥 NOTIFICA QUE O PROGRESSO MUDOU
+                OnProgressChanged?.Invoke();
+
                 CheckAllCompleted();
                 return;
             }
@@ -55,7 +65,38 @@ public class MissionSystem : MonoBehaviour
 
     public List<Mission> GetMissions() => missions;
 
-    // 🔥 VERIFICA SE TODAS AS MISSÕES FORAM COMPLETADAS
+    // Método para obter o progresso
+    public float GetProgress()
+    {
+        int total = missions.Count;
+        if (total == 0) return 0f;
+
+        int completed = 0;
+        foreach (Mission mission in missions)
+        {
+            if (mission.isCompleted)
+                completed++;
+        }
+
+        return (float)completed / total;
+    }
+
+    // Método para obter o progresso como texto
+    public string GetProgressText()
+    {
+        int total = missions.Count;
+        if (total == 0) return "0/0";
+
+        int completed = 0;
+        foreach (Mission mission in missions)
+        {
+            if (mission.isCompleted)
+                completed++;
+        }
+
+        return $"{completed}/{total}";
+    }
+
     private void CheckAllCompleted()
     {
         int total = missions.Count;
@@ -74,22 +115,17 @@ public class MissionSystem : MonoBehaviour
         }
     }
 
-    // 🔥 CORRUTINA PARA FINALIZAR O JOGO
     private System.Collections.IEnumerator CompleteGame()
     {
-        // Espera um pouco antes de começar o fade
         yield return new WaitForSeconds(delayBeforeFade);
 
-        // Faz o fade out
         if (SceneFader.Instance != null)
         {
             yield return StartCoroutine(SceneFader.Instance.FadeOut());
         }
 
-        // Espera mais um pouco
         yield return new WaitForSeconds(0.5f);
 
-        // Carrega a próxima cena
         if (!string.IsNullOrEmpty(nextSceneName))
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
@@ -99,7 +135,6 @@ public class MissionSystem : MonoBehaviour
             Debug.LogWarning("⚠️ Nenhuma cena definida em 'Next Scene Name'!");
         }
 
-        // Se tiver SceneFader, faz fade in na nova cena
         if (SceneFader.Instance != null)
         {
             yield return new WaitForSeconds(0.5f);
