@@ -308,9 +308,9 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!4 &625191067 stripped
+--- !u!4 &579839896 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8721198508121514036, guid: c4767d6774663814a9c406d12d62d166, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1633752757192392018, guid: c4767d6774663814a9c406d12d62d166, type: 3}
   m_PrefabInstance: {fileID: 1708108061}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 1482600511}
   - component: {fileID: 1482600510}
   - component: {fileID: 1482600514}
+  - component: {fileID: 1482600515}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -461,7 +462,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -569,6 +570,27 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 6e22428a0fa32a54a850bbe4dd5901b6, type: 2}
   m_BuildHeightMesh: 0
+--- !u!65 &1482600515
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482600509}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 0.07842074, z: 10}
+  m_Center: {x: 0, y: -0.03921037, z: 0}
 --- !u!1 &1628979495
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,11 +640,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8721198508121514036, guid: c4767d6774663814a9c406d12d62d166, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.36498
+      value: 7.68
       objectReference: {fileID: 0}
     - target: {fileID: 8721198508121514036, guid: c4767d6774663814a9c406d12d62d166, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.86
+      value: 2.65
       objectReference: {fileID: 0}
     - target: {fileID: 8721198508121514036, guid: c4767d6774663814a9c406d12d62d166, type: 3}
       propertyPath: m_LocalPosition.z
@@ -676,7 +698,7 @@ PrefabInstance:
     - target: {fileID: 883469709310344200, guid: 29a028799542efe48b57017bb35343bc, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 625191067}
+      objectReference: {fileID: 579839896}
     - target: {fileID: 883469709310344200, guid: 29a028799542efe48b57017bb35343bc, type: 3}
       propertyPath: 'pontosPatrulha.Array.data[0]'
       value: 
