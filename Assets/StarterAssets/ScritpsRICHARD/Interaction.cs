@@ -19,7 +19,7 @@ public class Interaction : MonoBehaviour
         if (!Physics.Raycast(_mainCam.transform.position, _mainCam.transform.forward, out RaycastHit hit, _interactionRange))
             return;
 
-
+        Debug.Log("sadksakld");
         if (hit.collider.TryGetComponent(out IInteractable interactable))
         {
             if (_hit == interactable)// SE FOR O MESMO OBJETO NAO FA�A NADA 
