@@ -7989,14 +7989,14 @@ RectTransform:
   m_GameObject: {fileID: 432544121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8.5661, y: 8.5661, z: 8.5661}
+  m_LocalScale: {x: 3.6446185, y: 3.6446185, z: 3.6446185}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400332120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 209, y: 347}
+  m_AnchoredPosition: {x: -260, y: 355}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &432544123
@@ -8021,8 +8021,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: YOU GOT CAUGHT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 471ca2e613c2b814e86620dfb96db388, type: 2}
-  m_sharedMaterial: {fileID: -184833047913961274, guid: 471ca2e613c2b814e86620dfb96db388, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1998be7a1e4e4d148a8c25c8197ac892, type: 2}
+  m_sharedMaterial: {fileID: -8946455922996024483, guid: 1998be7a1e4e4d148a8c25c8197ac892, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8084,7 +8084,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -146.28163, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -25065,7 +25065,7 @@ RectTransform:
   m_GameObject: {fileID: 1427444261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.3962393, y: 0.661896, z: 2.7955227}
+  m_LocalScale: {x: 3.4620824, y: 0.86046475, z: 2.7955227}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1338460375}
@@ -27914,7 +27914,7 @@ RectTransform:
   m_GameObject: {fileID: 1536352366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.3962393, y: 0.661896, z: 2.7955227}
+  m_LocalScale: {x: 3.4620824, y: 0.8356437, z: 2.7955227}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 974396305}
