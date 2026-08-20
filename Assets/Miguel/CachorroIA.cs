@@ -11,6 +11,11 @@ public class CachorroIA : MonoBehaviour
     public float anguloVisao = 120f;
     public float distanciaPonto = 1f;
 
+    [Header("Configurações de Áudio")]
+    public AudioSource audioSource;       // Arraste o AudioSource aqui no Inspector
+    public AudioClip musicaPatrulha;      // Música ambiente/normal
+    public AudioClip musicaPerseguicao;   // Música de perseguição
+
     private NavMeshAgent agent;
     private int pontoAtual;
     private bool perseguindo;
@@ -43,6 +48,9 @@ public class CachorroIA : MonoBehaviour
         agent.acceleration = 8f;
         agent.stoppingDistance = 0f;
 
+        // Inicia a música de patrulha
+        TocarMusica(musicaPatrulha);
+
         if (pontosPatrulha != null && pontosPatrulha.Length > 0)
         {
             pontoAtual = 0;
@@ -60,7 +68,11 @@ public class CachorroIA : MonoBehaviour
 
         if (PodeVerPlayer())
         {
-            perseguindo = true;
+            if (!perseguindo)
+            {
+                perseguindo = true;
+                TocarMusica(musicaPerseguicao); // Troca para a música de perseguição ao avistar
+            }
 
             agent.isStopped = false;
             agent.SetDestination(player.position);
@@ -70,13 +82,11 @@ public class CachorroIA : MonoBehaviour
             if (perseguindo)
             {
                 perseguindo = false;
+                TocarMusica(musicaPatrulha); // Volta para a música normal ao perder o player
 
-                if (pontosPatrulha != null &&
-                    pontosPatrulha.Length > 0)
+                if (pontosPatrulha != null && pontosPatrulha.Length > 0)
                 {
-                    agent.SetDestination(
-                        pontosPatrulha[pontoAtual].position
-                    );
+                    agent.SetDestination(pontosPatrulha[pontoAtual].position);
                 }
             }
 
@@ -84,23 +94,33 @@ public class CachorroIA : MonoBehaviour
         }
     }
 
-    void Patrulhar()
+    void TocarMusica(AudioClip clip)
     {
-        if (pontosPatrulha == null ||
-            pontosPatrulha.Length == 0)
+        if (audioSource == null || clip == null)
             return;
 
-        if (!agent.pathPending &&
-            agent.remainingDistance <= distanciaPonto)
+        // Evita reiniciar a música se ela já estiver tocando
+        if (audioSource.clip == clip && audioSource.isPlaying)
+            return;
+
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    void Patrulhar()
+    {
+        if (pontosPatrulha == null || pontosPatrulha.Length == 0)
+            return;
+
+        if (!agent.pathPending && agent.remainingDistance <= distanciaPonto)
         {
             pontoAtual++;
 
             if (pontoAtual >= pontosPatrulha.Length)
                 pontoAtual = 0;
 
-            agent.SetDestination(
-                pontosPatrulha[pontoAtual].position
-            );
+            agent.SetDestination(pontosPatrulha[pontoAtual].position);
         }
     }
 
@@ -115,22 +135,14 @@ public class CachorroIA : MonoBehaviour
         if (distancia > distanciaVisao)
             return false;
 
-        float angulo = Vector3.Angle(
-            transform.forward,
-            direcao
-        );
+        float angulo = Vector3.Angle(transform.forward, direcao);
 
         if (angulo > anguloVisao / 2f)
             return false;
 
-        if (Physics.Linecast(
-            origem,
-            destino,
-            out RaycastHit hit
-        ))
+        if (Physics.Linecast(origem, destino, out RaycastHit hit))
         {
-            if (hit.transform == player ||
-                hit.transform.IsChildOf(player))
+            if (hit.transform == player || hit.transform.IsChildOf(player))
             {
                 return true;
             }
@@ -143,8 +155,7 @@ public class CachorroIA : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform == player ||
-            collision.transform.IsChildOf(player))
+        if (collision.transform == player || collision.transform.IsChildOf(player))
         {
             CarregarJumpscare();
         }
@@ -152,8 +163,7 @@ public class CachorroIA : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.transform == player ||
-            other.transform.IsChildOf(player))
+        if (other.transform == player || other.transform.IsChildOf(player))
         {
             CarregarJumpscare();
         }
@@ -177,10 +187,6 @@ public class CachorroIA : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireSphere(
-            transform.position,
-            distanciaVisao
-        );
+        Gizmos.DrawWireSphere(transform.position, distanciaVisao);
     }
-}   
+}
